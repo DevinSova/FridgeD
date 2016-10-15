@@ -28,10 +28,12 @@ import java.util.Map;
 
 public class API {
 
-    private static Context context;
     final String requestUrl = "http://food2fork.com/api/search";
     final String key = "5624d1c6fe47028abb818d87ec5c239c";
+
+    private static Context context;
     private ArrayList<Ingredient> ingredients;
+
     StringRequest postRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
