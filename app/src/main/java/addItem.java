@@ -9,6 +9,7 @@ public class addItem {
     public static ArrayList<String> main (ArrayList<String> foodItems, String foodItem) {
 
         foodItems.add(foodItem);
+        return null;
     }
 }
 

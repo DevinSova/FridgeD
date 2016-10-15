@@ -50,7 +50,11 @@ public class arrayListFunctions {
             System.out.println("Wrong Input");
             return Items;
         }
+<<<<<<< HEAD
     return Items;
+=======
+        return null;
+>>>>>>> 0e848b4720eb724d771508f19c68f2f0287bb75a
     }
 
 
