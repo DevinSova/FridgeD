@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     BaseAdapter adapter;
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
+    String currentSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
-
+        currentSort = "Alphabetical(Ascending)";
 
         fridgeItems.setAdapter(adapter);
 
@@ -58,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fridgeArray.add(0, "hi");
+                fridgeArray.add(1, "");
                 updateListView();
+                fridgeArray.clear();
             }
         });
     }
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            setContentView(R.layout.settings);
         }
 
         return super.onOptionsItemSelected(item);
