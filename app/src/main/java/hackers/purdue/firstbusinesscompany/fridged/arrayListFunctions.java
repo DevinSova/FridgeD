@@ -35,6 +35,7 @@ public class arrayListFunctions {
             System.out.println("Wrong Input");
             return foodItems;
         }
+        return null;
     }
 
 
