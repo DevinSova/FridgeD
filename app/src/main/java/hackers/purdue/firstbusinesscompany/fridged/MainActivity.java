@@ -15,8 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     ListView fridgeItems;
-    Adapter adapter;
+    ListAdapter adapter;
     SharedPreferences fridgeSharedPreferences;
-    String[] fridgeArray;
+    ArrayList<String> fridgeArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (fridgeSharedPreferences.contains("fridges")) {
-            fridgeArray = fridgeSharedPreferences.getString("fridges", "").split(",");
+            fridgeArray = new ArrayList<String> (Arrays.asList(fridgeSharedPreferences.getString("fridges", "").split(",")));
+        } else {
+            fridgeArray = new ArrayList<>();
         }
-        fridgeItems = (ListView) findViewById(R.id.fridgeSharedPreferences);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        fridgeArray.add(0, "hi");
+        fridgeItems = (ListView) findViewById(R.id.fridgeList);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
 
 
+        fridgeItems.setAdapter((ListAdapter) adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        save();
     }
 
     @Override
@@ -79,9 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void save() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < fridgeArray.length; i++) {
-            builder.append(fridgeArray[i]).append(",");
+        for (int i = 0; i < fridgeArray.size(); i++) {
+            builder.append(fridgeArray.get(i)).append(",");
         }
         fridgeSharedPreferences.edit().putString("fridges", builder.toString());
+        //adapter.notify();
     }
 }
