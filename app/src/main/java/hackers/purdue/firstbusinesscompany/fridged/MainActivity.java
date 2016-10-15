@@ -11,17 +11,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class MainActivity extends AppCompatActivity {
 
 
     ListView fridgeItems;
-    ListAdapter adapter;
+    BaseAdapter adapter;
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
 
@@ -38,23 +40,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             fridgeArray = new ArrayList<>();
         }
-        fridgeArray.add(0, "hi");
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
 
 
-        fridgeItems.setAdapter((ListAdapter) adapter);
+        fridgeItems.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                fridgeArray.add(0, "hi");
+                updateListView();
             }
         });
-
-        save();
     }
 
     @Override
@@ -79,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void save() {
+    public void updateListView() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < fridgeArray.size(); i++) {
             builder.append(fridgeArray.get(i)).append(",");
         }
-        fridgeSharedPreferences.edit().putString("fridges", builder.toString());
-        //adapter.notify();
+        fridgeSharedPreferences.edit().putString("fridges", builder.toString()).apply();
+        adapter.notifyDataSetChanged();
     }
 }
