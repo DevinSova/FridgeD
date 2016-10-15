@@ -2,5 +2,5 @@
 <resources>
     <color name="colorPrimary">#2D65B1</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#13315c</color>
+    <color name="colorAccent">#13315c</color> //TODO: finalize color palette
 </resources>
