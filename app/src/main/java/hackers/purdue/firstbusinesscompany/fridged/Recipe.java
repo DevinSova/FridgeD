@@ -1,25 +1,27 @@
 package hackers.purdue.firstbusinesscompany.fridged;
 
-import android.app.DownloadManager;
+import android.graphics.Bitmap;
 import android.media.Image;
 
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by bscholer on 10/15/16.
  */
 public class Recipe {
 
+
     private String publisher;
     private String title;
-    private Image image;
+    private Bitmap image;
     private URL url;
     private double socialRank;
 
-    public Recipe(String publisher, String title, Image image, URL url, double socialRank) {
+    public Recipe() {
+    }
+
+
+    public Recipe(String publisher, String title, Bitmap image, URL url, double socialRank) {
         this.publisher = publisher;
         this.title = title;
         this.image = image;
@@ -43,11 +45,11 @@ public class Recipe {
         this.title = title;
     }
 
-    public Image getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 
@@ -65,17 +67,5 @@ public class Recipe {
 
     public void setSocialRank(double socialRank) {
         this.socialRank = socialRank;
-    }
-
-    public static ArrayList<Recipe> getRecipes(ArrayList<String> ingredients)  {
-        try {
-            URL requestURL = new URL("http://food2fork.com/api/search");
-            HttpURLConnection client = (HttpURLConnection) requestURL.openConnection();
-            client.setRequestMethod("POST");
-            client.setRequestProperty();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
