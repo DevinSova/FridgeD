@@ -59,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fridgeArray.add(0, "hi");
-                fridgeArray.add(1, "");
                 updateListView();
-                fridgeArray.clear();
             }
         });
     }
@@ -81,12 +79,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            setContentView(R.layout.settings);
+        if (id == R.id.action_sort) {
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public void updateListView() {
         StringBuilder builder = new StringBuilder();

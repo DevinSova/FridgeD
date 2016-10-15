@@ -17,8 +17,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fridgeList"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="37dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
