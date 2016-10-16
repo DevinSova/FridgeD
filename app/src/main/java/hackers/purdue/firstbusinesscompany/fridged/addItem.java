@@ -30,7 +30,8 @@ public class addItem extends AppCompatActivity
     {
         Intent sendIntent = new Intent();
         newItem = input.getText().toString();
-        sendIntent.putExtra("edittextvalue", newItem);
+        sendIntent.putExtra("addItemString", newItem);
+        setResult(RESULT_OK, sendIntent);
         finish();
 
     }

@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         addItem = new Intent(this, addItem.class);
-        addItem.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        addItem.putExtra("EXIT", true);
 
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -75,18 +73,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                input = data.getStringExtra("key");
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                input = data.getStringExtra("addItemString");
+                fridgeArray.add(input);
+                updateListView();
             }
         }
-        fridgeArray.add(input);
-        updateListView();
     }
 
 
