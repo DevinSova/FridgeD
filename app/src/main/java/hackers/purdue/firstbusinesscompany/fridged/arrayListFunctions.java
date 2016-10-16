@@ -49,32 +49,6 @@ public class arrayListFunctions {
             System.out.println("Wrong Input");
             return Items;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-//<<<<<<< HEAD
     return Items;
-//=======
-        //return null;
-//>>>>>>> 0e848b4720eb724d771508f19c68f2f0287bb75a
-=======
-<<<<<<< HEAD
-        <<<<<<<HEAD
-        return Items;
-        =======
-        return null;
-        >>>>>>>0e848 b4720eb724d771508f19c68f2f0287bb75a
-=======
-//<<<<<<< HEAD
-
-    return Items;
-//=======
-//>>>>>>> 0e848b4720eb724d771508f19c68f2f0287bb75a
->>>>>>> 58e93463c4ab12bb6575033023e2cdc276bb0cf9
->>>>>>> 8d2e21fe27c7acec351b76c5603bac3fe2e3b307
-=======
-        return Items;
->>>>>>> uiandactivities
     }
-
-
 }

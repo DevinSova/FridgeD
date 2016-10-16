@@ -1,30 +1,31 @@
 package hackers.purdue.firstbusinesscompany.fridged;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-<<<<<<< HEAD
-=======
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
->>>>>>> uiandactivities
+
+import static android.R.attr.button;
+import static android.R.attr.prompt;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
     char currentSort;
+    Intent addItem;
+    String input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,33 +45,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        addItem = new Intent(this, addItem.class);
 
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
         if (fridgeSharedPreferences.contains("fridges")) {
             fridgeArray = new ArrayList<String>(Arrays.asList(fridgeSharedPreferences.getString("fridges", "").split(",")));
-        } else {
+        }
+        else {
             fridgeArray = new ArrayList<>();
         }
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
         currentSort = 'A';
 
-        fridgeItems.setAdapter(adapter);
 
+        fridgeItems.setAdapter(adapter);
+        //////////////////////////////////////////////////////////////////////////////
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fridgeArray.add(0, "a");
-                fridgeArray.add(1, "b");
-                fridgeArray.add(2, "c");
-                fridgeArray.add(3, "d");
-                fridgeArray.add(4, "e");
-
-                updateListView();
+                startActivityForResult(addItem, 1);
             }
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                input = data.getStringExtra("addItemString");
+                fridgeArray.add(input);
+                updateListView();
+            }
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -102,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         else if(id == R.id.recipies) {
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 
