@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -46,9 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         addItem = new Intent(this, addItem.class);
-
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
 
         if (fridgeSharedPreferences.contains("fridges")) {
             fridgeArray = new ArrayList<String>(Arrays.asList(fridgeSharedPreferences.getString("fridges", "").split(",")));
@@ -62,12 +61,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         fridgeItems.setAdapter(adapter);
-        //////////////////////////////////////////////////////////////////////////////
+        fridgeItems.setLongClickable(true);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(addItem, 1);
+            }
+        });
+
+        fridgeItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                fridgeArray.remove(arrayListFunctions.removeElement(fridgeItems.getItemAtPosition(position).toString(), fridgeArray));
+                updateListView();
+                return true;
             }
         });
     }
@@ -78,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 input = data.getStringExtra("addItemString");
-                fridgeArray.add(input);
-                updateListView();
+                if(input != null && !input.isEmpty()) {
+                    fridgeArray.add(input);
+                    updateListView();
+                }
             }
         }
     }
@@ -121,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     public void updateListView() {
         StringBuilder builder = new StringBuilder();

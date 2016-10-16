@@ -51,4 +51,14 @@ public class arrayListFunctions {
         }
     return Items;
     }
+
+    public static int removeElement(String find, ArrayList<String> items)
+    {
+        for(int i = 0; i < items.size(); i++)
+        {
+            if(items.get(i).equals(find))
+                return i;
+        }
+        return -1;
+    }
 }
