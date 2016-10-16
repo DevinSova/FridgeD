@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,11 +34,16 @@ public class API {
 
     private static Context context;
     private ArrayList<Ingredient> ingredients;
+    private ArrayList<Recipe> recipes;
 
     StringRequest postRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
             try {
+                recipes = new ArrayList<>();
                 int count;
                 JSONObject recipeReply = new JSONObject(response);
                 count = recipeReply.getInt("count");
@@ -56,8 +62,10 @@ public class API {
                     recipes.add(recipeToAdd);
                 }
 
+                Toast.makeText(context, "Made it here", Toast.LENGTH_LONG).show();
 
             } catch (Exception e) {
+                Toast.makeText(context, "Made it to error land", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -65,7 +73,8 @@ public class API {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Toast.makeText(context, "It didn't work", Toast.LENGTH_LONG).show();
+            error.printStackTrace();
+            Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
     ) {
@@ -84,7 +93,7 @@ public class API {
             return params;
         }
     };
-    private ArrayList<Recipe> recipes;
+
 
     public API(Context context, ArrayList<Ingredient> ingredients) {
         this.context = context;
@@ -92,8 +101,13 @@ public class API {
     }
 
     public ArrayList<Recipe> getRecipes() {
-        RequestQueue queue = Volley.newRequestQueue(context); // this = context
-        queue.add(postRequest);
+
+        new Thread() {
+            public void run() {
+                RequestQueue queue = Volley.newRequestQueue(context); // this = context
+                queue.add(postRequest);
+            }
+        }.start();
         return recipes;
     }
 }

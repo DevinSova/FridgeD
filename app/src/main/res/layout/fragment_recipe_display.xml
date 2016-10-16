@@ -1,14 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="250dp"
     tools:context="hackers.purdue.firstbusinesscompany.fridged.RecipeDisplay">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/test_food_photo"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:id="@+id/image"
         />
 
@@ -16,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/publisher"
-        android:text="John Smith"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
@@ -32,7 +32,6 @@
         android:layout_above="@+id/publisher"
         android:textAllCaps="true"
         android:textSize="@dimen/display1"
-        android:text="Some Chicken stuff lol"
         android:ellipsize="end"
         android:singleLine="true"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
