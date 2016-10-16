@@ -75,8 +75,10 @@ public class API {
             params.put("key", key);
             String ingredientString = "";
             for (Ingredient ingredient : ingredients) {
-                ingredientString += ingredient.toString();
+                ingredientString += "," + ingredient.toString();
             }
+            // Cuts out first extra comma
+            ingredientString = ingredientString.substring(1);
             params.put("q", ingredientString);
 
             return params;
