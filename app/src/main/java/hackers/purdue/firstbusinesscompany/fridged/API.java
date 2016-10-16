@@ -39,9 +39,6 @@ public class API {
     StringRequest postRequest = new StringRequest(Request.Method.POST, requestUrl, new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-            StrictMode.setThreadPolicy(policy);
             try {
                 recipes = new ArrayList<>();
                 int count;
@@ -89,6 +86,7 @@ public class API {
             // Cuts out first extra comma
             ingredientString = ingredientString.substring(1);
             params.put("q", ingredientString);
+            //Toast.makeText(context, params.toString(), Toast.LENGTH_LONG).show();
 
             return params;
         }
