@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="hackers.purdue.firstbusinesscompany.fridged.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sortimage"
+        android:title="@string/action_sort"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/recipies"
+        android:icon="@drawable/ic_recipies"
+        android:title="@string/recipies"
+        app:showAsAction="always"/>
 </menu>

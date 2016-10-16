@@ -17,6 +17,14 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+<<<<<<< HEAD
+=======
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+>>>>>>> uiandactivities
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     BaseAdapter adapter;
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
+    char currentSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         }
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
-
+        currentSort = 'A';
 
         fridgeItems.setAdapter(adapter);
 
@@ -50,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fridgeArray.add(0, "hi");
+                fridgeArray.add(0, "a");
+                fridgeArray.add(1, "b");
+                fridgeArray.add(2, "c");
+                fridgeArray.add(3, "d");
+                fridgeArray.add(4, "e");
+
                 updateListView();
             }
         });
@@ -71,12 +85,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_sort) {
+            if(currentSort == 'A') {
+                currentSort = 'D';
+                Collections.sort(fridgeArray, String.CASE_INSENSITIVE_ORDER);
+                Collections.reverse(fridgeArray);
+                updateListView();
+            }
+            else{
+                currentSort = 'A';
+                Collections.sort(fridgeArray, String.CASE_INSENSITIVE_ORDER);
+                updateListView();
+            }
+        }
+
+        else if(id == R.id.recipies) {
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public void updateListView() {
         StringBuilder builder = new StringBuilder();
