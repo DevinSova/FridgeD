@@ -48,7 +48,7 @@ public class API {
                     Recipe recipeToAdd = new Recipe();
                     recipeToAdd.setPublisher(recipe.getString("publisher"));
                     recipeToAdd.setTitle(recipe.getString("title"));
-                    recipeToAdd.setUrl(new URL(recipe.getString("source_url")));
+                    recipeToAdd.setUrl(recipe.getString("source_url"));
                     recipeToAdd.setSocialRank(recipe.getDouble("social_rank"));
                     Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(
                             recipe.getString("image_url")).getContent());

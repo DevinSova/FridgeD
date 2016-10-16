@@ -14,17 +14,19 @@ public class Recipe {
     private String publisher;
     private String title;
     private Bitmap image;
-    private URL url;
+    private String url;
     private double socialRank;
 
     public Recipe() {
     }
 
 
-    public Recipe(String publisher, String title, Bitmap image, URL url, double socialRank) {
+    public Recipe(String publisher, String title, Bitmap image, String url, double socialRank) {
         this.publisher = publisher;
         this.title = title;
         this.image = image;
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
         this.url = url;
         this.socialRank = socialRank;
     }
@@ -53,11 +55,13 @@ public class Recipe {
         this.image = image;
     }
 
-    public URL getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(URL url) {
+    public void setUrl(String url) {
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
         this.url = url;
     }
 
