@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     BaseAdapter adapter;
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
-    String currentSort;
+    char currentSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
-        currentSort = "Alphabetical(Ascending)";
+        currentSort = 'A';
 
         fridgeItems.setAdapter(adapter);
 
@@ -80,6 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sort) {
+            if(currentSort == 'A') {
+                currentSort = 'D';
+                arrayListFunctions.sortArrayList(fridgeArray, currentSort);
+            }
+            else{
+                currentSort = 'D';
+                arrayListFunctions.sortArrayList(fridgeArray, currentSort);
+            }
+        }
+
+        else if(id == R.id.recipies) {
 
         }
 
