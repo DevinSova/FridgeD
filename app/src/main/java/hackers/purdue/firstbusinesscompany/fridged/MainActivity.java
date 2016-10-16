@@ -1,30 +1,31 @@
 package hackers.purdue.firstbusinesscompany.fridged;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-<<<<<<< HEAD
-=======
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
->>>>>>> uiandactivities
+
+import static android.R.attr.button;
+import static android.R.attr.prompt;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
     char currentSort;
+    EditText stringInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,29 +48,52 @@ public class MainActivity extends AppCompatActivity {
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (fridgeSharedPreferences.contains("fridges")) {
             fridgeArray = new ArrayList<String>(Arrays.asList(fridgeSharedPreferences.getString("fridges", "").split(",")));
-        } else {
+        }
+        else {
             fridgeArray = new ArrayList<>();
         }
         fridgeItems = (ListView) findViewById(R.id.fridgeList);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fridgeArray);
         currentSort = 'A';
 
+
         fridgeItems.setAdapter(adapter);
+        //////////////////////////////////////////////////////////////////////////////
+        LayoutInflater input = LayoutInflater.from(getApplicationContext());
+        View inputView = input.inflate(R.layout.prompt, null);
+
+        AlertDialog.Builder inputDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+        //Set prompt.xml to the builder
+        inputDialogBuilder.setView(prompt);
+        stringInput = (EditText) inputView.findViewById(R.id.input);
+
+        //Setup the message
+        inputDialogBuilder.setCancelable(false).setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                fridgeArray.add(stringInput.getText().toString());
+            }
+        });
+        inputDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog inputDialog = inputDialogBuilder.create();
+
+        //////////////////////////////////////////////////////////////////////////////
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fridgeArray.add(0, "a");
-                fridgeArray.add(1, "b");
-                fridgeArray.add(2, "c");
-                fridgeArray.add(3, "d");
-                fridgeArray.add(4, "e");
-
-                updateListView();
+                inputDialog.show();
             }
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         else if(id == R.id.recipies) {
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 
