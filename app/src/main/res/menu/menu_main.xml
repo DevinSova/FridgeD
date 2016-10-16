@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_sortimage"
         android:title="@string/action_sort"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/recipies"
+        android:icon="@drawable/ic_recipies"
+        android:title="@string/recipies"
+        app:showAsAction="always"/>
 </menu>
