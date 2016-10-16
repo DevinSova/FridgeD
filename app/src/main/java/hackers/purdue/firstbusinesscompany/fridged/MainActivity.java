@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences fridgeSharedPreferences;
     ArrayList<String> fridgeArray;
     char currentSort;
-    EditText stringInput;
+    Intent addItem;
+    String input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        addItem = new Intent(this, addItem.class);
+        addItem.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        addItem.putExtra("EXIT", true);
 
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
         if (fridgeSharedPreferences.contains("fridges")) {
             fridgeArray = new ArrayList<String>(Arrays.asList(fridgeSharedPreferences.getString("fridges", "").split(",")));
         }
@@ -59,38 +65,28 @@ public class MainActivity extends AppCompatActivity {
 
         fridgeItems.setAdapter(adapter);
         //////////////////////////////////////////////////////////////////////////////
-        LayoutInflater input = LayoutInflater.from(getApplicationContext());
-        View inputView = input.inflate(R.layout.prompt, null);
-
-        AlertDialog.Builder inputDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-        //Set prompt.xml to the builder
-        inputDialogBuilder.setView(prompt);
-        stringInput = (EditText) inputView.findViewById(R.id.input);
-
-        //Setup the message
-        inputDialogBuilder.setCancelable(false).setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                fridgeArray.add(stringInput.getText().toString());
-            }
-        });
-        inputDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        final AlertDialog inputDialog = inputDialogBuilder.create();
-
-        //////////////////////////////////////////////////////////////////////////////
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputDialog.show();
+                startActivityForResult(addItem, 1);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                input = data.getStringExtra("key");
+            }
+        }
+        fridgeArray.add(input);
+        updateListView();
     }
 
 
@@ -101,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
