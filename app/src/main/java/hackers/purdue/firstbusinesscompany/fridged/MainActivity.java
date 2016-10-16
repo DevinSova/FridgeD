@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     char currentSort;
     Intent addItem;
     String input;
+    Intent recipeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         addItem = new Intent(this, addItem.class);
+        recipeView = new Intent(this, API.class);
         fridgeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if (fridgeSharedPreferences.contains("fridges")) {
@@ -127,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if(id == R.id.recipies) {
+            recipeView.putExtra("fridgeArray", fridgeArray);
+            startActivity(recipeView);
 
         }
         return super.onOptionsItemSelected(item);
@@ -140,4 +144,6 @@ public class MainActivity extends AppCompatActivity {
         fridgeSharedPreferences.edit().putString("fridges", builder.toString()).apply();
         adapter.notifyDataSetChanged();
     }
+
+
 }

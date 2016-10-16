@@ -25,6 +25,11 @@
             android:label="Add Item"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".API"
+            android:label="Recipes found:"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

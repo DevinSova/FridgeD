@@ -1,9 +1,19 @@
 package hackers.purdue.firstbusinesscompany.fridged;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,14 +29,17 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by bscholer on 10/15/16.
  */
 
-public class API {
+public class API extends AppCompatActivity
+{
 
     final String requestUrl = "http://food2fork.com/api/search";
     final String key = "5624d1c6fe47028abb818d87ec5c239c";
@@ -82,16 +95,76 @@ public class API {
             return params;
         }
     };
-    private ArrayList<Recipe> recipes;
+
 
     public API(Context context, ArrayList<Ingredient> ingredients) {
         this.context = context;
         this.ingredients = ingredients;
     }
 
+    public API() {}
+
     public ArrayList<Recipe> getRecipes() {
         RequestQueue queue = Volley.newRequestQueue(context); // this = context
         queue.add(postRequest);
         return recipes;
+    }
+
+    ListView recipeList;
+    BaseAdapter adapter;
+    SharedPreferences recipeSharedPreferences;
+    private ArrayList<Recipe> recipes;
+    private ArrayList<String> recipesURLS;
+
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.recipe_view);
+        recipeList = (ListView) findViewById(R.id.recipeList);
+        Intent intent = getIntent();
+        ArrayList<String> fridgeArray = intent.getStringArrayListExtra("fridgeArray");
+        this.ingredients = new ArrayList<Ingredient>();
+        for(int i = 0; i < fridgeArray.size(); i++)
+        {
+            Ingredient newIngredient = new Ingredient(fridgeArray.get(i));
+            this.ingredients.add(newIngredient);
+        }
+        //Now I have the ingredients arraylist.
+        API api = new API(getApplicationContext(), this.ingredients);
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+         recipes = api.getRecipes();
+
+        recipesURLS = new ArrayList<String>();
+
+
+        recipeSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (recipeSharedPreferences.contains("url")) {
+            recipesURLS = new ArrayList<String>(Arrays.asList(recipeSharedPreferences.getString("url", "").split(",")));
+        }
+        else {
+            recipesURLS = new ArrayList<>();
+        }
+
+        if(!(recipes == null)) {
+            for (int i = 0; i < recipes.size(); i++) {
+                String newURL = recipes.get(i).getUrl().toString();
+                recipesURLS.add(newURL);
+            }
+        }
+        else if(recipes.size() == 1)
+            recipesURLS.add("No recipes found. Sorry fam");
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recipesURLS);
+        recipeList.setAdapter(adapter);
+        updateListView();
+    }
+
+    public void updateListView() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < recipesURLS.size(); i++) {
+            builder.append(recipesURLS.get(i)).append(",");
+        }
+        recipeSharedPreferences.edit().putString("url", builder.toString()).apply();
+        adapter.notifyDataSetChanged();
     }
 }
